@@ -1,0 +1,21 @@
+{
+  "name": "soil-salinity-sensor",
+  "author": "H. Marcelo Rentería P.",
+  "pins": [
+    "VCC",
+    "GND",
+    "A0",
+    "",
+    ""
+  ],
+  "controls": [
+    {
+      "id": "salinity",
+      "label": "Soil Salinity",
+      "type": "range",
+      "min": 0.0,
+      "max": 10.0,
+      "step": 0.01
+    }
+  ]
+}

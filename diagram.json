@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "author": "AgroTech",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "wokwi-arduino-uno", "id": "uno", "top": 0.6, "left": 66.6, "attrs": {} },
+    {
+      "type": "wokwi-dht22",
+      "id": "dht1",
+      "top": 70.2,
+      "left": 402.3,
+      "rotate": 90,
+      "attrs": { "humidity": "46", "temperature": "-40" }
+    },
+    {
+      "type": "chip-soil-salinity-sensor",
+      "id": "chip1",
+      "top": -56.58,
+      "left": 187.2,
+      "attrs": {}
+    }
+  ],
+  "connections": [
+    [ "dht1:GND", "uno:GND.2", "black", [ "v86.4", "h-167.1" ] ],
+    [ "dht1:SDA", "uno:2", "green", [ "h-9.6", "v-28.8", "h134.3", "v-86.3" ] ],
+    [ "chip1:GND", "uno:GND.1", "black", [ "h0" ] ],
+    [ "dht1:VCC", "uno:3.3V", "red", [ "h-19.2", "v134.4", "h-138.6" ] ],
+    [ "chip1:VCC", "uno:5V", "red", [ "h-163.2", "v278.4", "h197.8" ] ],
+    [ "chip1:A0", "uno:3", "green", [ "v19.2", "h101.6" ] ]
+  ],
+  "dependencies": {}
+}
