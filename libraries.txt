@@ -1,9 +1,7 @@
 # Wokwi Library List
 # See https://docs.wokwi.com/guides/libraries
 
-MyDHT22
-DHT sensor library
+DHT sensor library for ESPx
+ArduinoJson
+PubSubClient
 WiFi
-MQTT Client
-HttpClient
-HTTP

@@ -1,32 +1,34 @@
 {
   "version": 1,
-  "author": "AgroTech",
+  "author": "H. Marcelo Rentería P.",
   "editor": "wokwi",
   "parts": [
-    { "type": "wokwi-arduino-uno", "id": "uno", "top": 0.6, "left": 66.6, "attrs": {} },
+    { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": 0, "left": 0, "attrs": {} },
     {
       "type": "wokwi-dht22",
       "id": "dht1",
-      "top": 70.2,
-      "left": 402.3,
-      "rotate": 90,
-      "attrs": { "humidity": "46", "temperature": "-40" }
+      "top": 33.6,
+      "left": -113.7,
+      "rotate": 270,
+      "attrs": {}
     },
     {
       "type": "chip-soil-salinity-sensor",
       "id": "chip1",
-      "top": -56.58,
-      "left": 187.2,
+      "top": 97.02,
+      "left": 139.2,
       "attrs": {}
     }
   ],
   "connections": [
-    [ "dht1:GND", "uno:GND.2", "black", [ "v86.4", "h-167.1" ] ],
-    [ "dht1:SDA", "uno:2", "green", [ "h-9.6", "v-28.8", "h134.3", "v-86.3" ] ],
-    [ "chip1:GND", "uno:GND.1", "black", [ "h0" ] ],
-    [ "dht1:VCC", "uno:3.3V", "red", [ "h-19.2", "v134.4", "h-138.6" ] ],
-    [ "chip1:VCC", "uno:5V", "red", [ "h-163.2", "v278.4", "h197.8" ] ],
-    [ "chip1:A0", "uno:3", "green", [ "v19.2", "h101.6" ] ]
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+    [ "chip1:GND", "esp:GND.2", "black", [ "h-28.8", "v-86.4" ] ],
+    [ "chip1:VCC", "esp:5V", "red", [ "h-19.2", "v115.2", "h-120.19" ] ],
+    [ "chip1:A0", "esp:17", "green", [ "h0" ] ],
+    [ "dht1:SDA", "esp:33", "green", [ "h0" ] ],
+    [ "dht1:GND", "esp:GND.1", "black", [ "h19.2", "v76.8" ] ],
+    [ "dht1:VCC", "esp:3V3", "red", [ "h9.6", "v-76.8" ] ]
   ],
   "dependencies": {}
 }
