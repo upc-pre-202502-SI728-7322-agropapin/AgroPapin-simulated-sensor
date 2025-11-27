@@ -13,23 +13,23 @@ const char* WIFI_SSID = "Wokwi-GUEST";
 const char* WIFI_PASSWORD = "";
 
 // MQTT configuration
-const char* MQTT_SERVER = "192.168.100.7";
+const char* MQTT_SERVER = "10.183.161.1";
 const int MQTT_PORT = 1883;
 const char* MQTT_CLIENT_ID = "agro-papin-002";
 
 // MQTT Topics
-const char* TOPIC_STATUS = "agropapin/devices/agro-papin-001/status";
-const char* TOPIC_COMMANDS = "agropapin/devices/agro-papin-001/commands";
-const char* TOPIC_TELEMETRY = "agropapin/devices/agro-papin-001/telemetry";
+const char* TOPIC_STATUS = "agropapin/devices/agro-papin-002/status";
+const char* TOPIC_COMMANDS = "agropapin/devices/agro-papin-002/commands";
+const char* TOPIC_TELEMETRY = "agropapin/devices/agro-papin-002/telemetry";
 
 // Device configuration
-const char* DEVICE_ID = "agro-papin-001";
+const char* DEVICE_ID = "agro-papin-002";
 DHTesp dht;
 float temperature = 0.0;
 float humidity = 0.0;
 float salinity = 0.0;
-int tlimit = 255;
-int hlimit = 255;
+float tlimit = 0.0;
+float hlimit = 100.0;
 
 unsigned long lastStatusUpdate = 0;
 const unsigned long STATUS_INTERVAL = 10000; // Send status every 10 seconds
@@ -40,7 +40,7 @@ PubSubClient mqttClient(wifiClient);
 
 
 bool verifyH() {
-  return (humidity > hlimit) ? false : true;
+  return (humidity < hlimit) ? false : true;
 }
 
 bool verifyT() {
@@ -95,6 +95,8 @@ void loop() {
   }
   
   delay(100);
+
+  sendTelemetryUpdate();
 }
 
 /// @brief Establishes WiFi connection
@@ -173,10 +175,10 @@ void processCommand(const String& command) {
   }
   
   // Extract command data
-  int _tlimit = doc["temperature_limit"] | tlimit;
-  int _hlimit = doc["humidity_limit"] | hlimit;
+  float _tlimit = doc["temperature_limit"] | tlimit;
+  float _hlimit = doc["humidity_limit"] | hlimit;
   
-  Serial.printf("Command - New Temperature Limit: %s | New Humidity Limit: %.1f%%\n", _tlimit, _hlimit);
+  Serial.printf("Command - New Temperature Limit: %.1f%% | New Humidity Limit: %.1f%%\n", _tlimit, _hlimit);
   
   // Change values based on command
   tlimit = _tlimit;
@@ -218,10 +220,10 @@ void sendTelemetryUpdate() {
   doc["device_id"] = DEVICE_ID;
   doc["timestamp"] = millis();
   doc["temperature"] = temperature;
-  doc["humidity"] = humidity;
+  doc["soil_moisture"] = humidity;
   doc["temperature_limit"] = tlimit;
   doc["humidity_limit"] = hlimit;
-  doc["soil_moisture"] = salinity;
+  doc["salinity"] = salinity;
   doc["passed_temperature"] = verifyT();
   doc["passed_humidity"] = verifyH();
   
