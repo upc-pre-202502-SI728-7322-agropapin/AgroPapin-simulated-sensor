@@ -18,12 +18,13 @@ const int MQTT_PORT = 1883;
 const char* MQTT_CLIENT_ID = "agro-papin-002";
 
 // MQTT Topics
-const char* TOPIC_STATUS = "agropapin/devices/agro-papin-001/status";
-const char* TOPIC_COMMANDS = "agropapin/devices/agro-papin-001/commands";
-const char* TOPIC_TELEMETRY = "agropapin/devices/agro-papin-001/telemetry";
+const char* TOPIC_STATUS = "agro-papin-001/status";
+const char* TOPIC_COMMANDS = "agro-papin-001/commands";
+const char* TOPIC_TELEMETRY = "agro-papin-001/telemetry";
 
 // Device configuration
-const char* DEVICE_ID = "agro-papin-001";
+const char* DEVICE_ID = "b91b40da-a6fa-4a96-b96d-613194b9eb9f";
+
 DHTesp dht;
 float temperature = 0.0;
 float humidity = 0.0;
@@ -74,15 +75,6 @@ void setup() {
 /// @brief Arduino main loop function
 void loop() {
   // Ensure MQTT connection is maintained
-  
-
-  TempAndHumidity data = dht.getTempAndHumidity();
-  temperature = data.temperature;
-  humidity = data.humidity;
-  salinity = analogRead(SS_PIN);
-
-  Serial.printf("Temperature: %.1f%% | Passed limit: %d | Humidity: %.1f%% | Passed limit: %d | Salinity: %.1f%%\n",temperature,verifyT(),humidity,verifyH(),salinity);
-
   if (!mqttClient.connected()) {
     connectMQTT();
   }
@@ -92,8 +84,15 @@ void loop() {
   // Send periodic status updates
   unsigned long currentTime = millis();
   if (currentTime - lastStatusUpdate >= STATUS_INTERVAL) {
+    TempAndHumidity data = dht.getTempAndHumidity();
+    temperature = data.temperature;
+    humidity = data.humidity;
+    salinity = analogRead(SS_PIN);
+
+    Serial.printf("Temperature: %.1f%% | Passed limit: %d | Humidity: %.1f%% | Passed limit: %d | Salinity: %.1f%%\n",temperature,verifyT(),humidity,verifyH(),salinity);
+
     sendStatusUpdate();
-    // Also send telemetry periodically so the sensor actually publishes readings
+
     sendTelemetryUpdate();
     lastStatusUpdate = currentTime;
   }
