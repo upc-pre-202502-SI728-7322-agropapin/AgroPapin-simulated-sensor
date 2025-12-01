@@ -6,7 +6,7 @@
 
 // Pin definitions
 const int DHT_PIN = 33;  // Relay connected to pin 14 for irrigation control
-const int SS_PIN = 17;    // LED connected to pin 12 for status indication
+const int SS_PIN = 35;    // LED connected to pin 12 for status indication
 
 // WiFi credentials
 const char* WIFI_SSID = "Wokwi-GUEST";
@@ -80,16 +80,16 @@ void loop() {
   }
   // Process MQTT messages
   mqttClient.loop();
-  
   // Send periodic status updates
   unsigned long currentTime = millis();
   if (currentTime - lastStatusUpdate >= STATUS_INTERVAL) {
     TempAndHumidity data = dht.getTempAndHumidity();
     temperature = data.temperature;
     humidity = data.humidity;
-    salinity = analogRead(SS_PIN);
-
-    Serial.printf("Temperature: %.1f%% | Passed limit: %d | Humidity: %.1f%% | Passed limit: %d | Salinity: %.1f%%\n",temperature,verifyT(),humidity,verifyH(),salinity);
+    int16_t ss = analogRead(SS_PIN);
+    Serial.println(ss);
+    salinity = ss * (10.0/4095.0);
+    Serial.printf("Temperature: %.1f%% | Passed limit: %d | Humidity: %.1f%% | Passed limit: %d | Salinity: %d\n",temperature,verifyT(),humidity,verifyH(),salinity);
 
     sendStatusUpdate();
 
@@ -185,7 +185,7 @@ void processCommand(const String& command) {
   tlimit = _tlimit;
   hlimit = _hlimit;
 
-  Serial.printf("Temperature: %.1f%% | Passed limit: %d | Humidity: %.1f%% | Passed limit: %d | Salinity: %.1f%%\n",temperature,verifyT(),humidity,verifyH(),salinity);
+  Serial.printf("Temperature: %.1f%% | Passed limit: %d | Humidity: %.1f%% | Passed limit: %d | Salinity: %d\n",temperature,verifyT(),humidity,verifyH(),salinity);
 
   Serial.println("Values verified.");
   

@@ -10,7 +10,7 @@
       "top": 33.6,
       "left": -113.7,
       "rotate": 270,
-      "attrs": {}
+      "attrs": { "temperature": "39.4", "humidity": "28" }
     },
     {
       "type": "chip-soil-salinity-sensor",
@@ -25,10 +25,10 @@
     [ "esp:RX", "$serialMonitor:TX", "", [] ],
     [ "chip1:GND", "esp:GND.2", "black", [ "h-28.8", "v-86.4" ] ],
     [ "chip1:VCC", "esp:5V", "red", [ "h-19.2", "v115.2", "h-120.19" ] ],
-    [ "chip1:A0", "esp:17", "green", [ "h0" ] ],
     [ "dht1:SDA", "esp:33", "green", [ "h0" ] ],
     [ "dht1:GND", "esp:GND.1", "black", [ "h19.2", "v76.8" ] ],
-    [ "dht1:VCC", "esp:3V3", "red", [ "h9.6", "v-76.8" ] ]
+    [ "dht1:VCC", "esp:3V3", "red", [ "h9.6", "v-76.8" ] ],
+    [ "chip1:A0", "esp:35", "green", [ "h0" ] ]
   ],
   "dependencies": {}
 }
